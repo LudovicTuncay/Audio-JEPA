@@ -10,8 +10,6 @@ model_checkpoint:
   filename: "epoch_{epoch:03d}-step_{step}"
   save_last: True
   monitor: "val/loss"
-  save_top_k: 3
-  every_n_epochs: 1
   auto_insert_metric_name: False
   verbose: True
 
