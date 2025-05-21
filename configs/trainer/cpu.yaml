@@ -3,5 +3,5 @@ defaults:
 
 accelerator: cpu
 devices: 1
-max_steps: 100
+max_steps: 50
 # max_epochs: 2
