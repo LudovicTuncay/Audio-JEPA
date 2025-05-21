@@ -1,0 +1,12 @@
+_target_: src.masks.components.multiblock.MaskCollator
+
+defaults:
+  - _self_
+
+# patch size is determined in the model config files
+
+nenc: 1 # number of context masks
+enc_mask_scale: [0.8, 1.0]
+npred: 3 # number of prediction/target masks
+pred_mask_scale: [0.15, 0.2]
+aspect_ratio: [0.5, 2.0]

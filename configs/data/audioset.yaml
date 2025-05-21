@@ -1,0 +1,52 @@
+# configs/data/audioset.yaml
+
+_target_: src.data.audioset_datamodule.AudioSetDataModule
+
+defaults:
+  - _self_
+
+# Data paths (resolved through Hydra)
+val_prop: 0.1  # Proportion of the training data to use for validation
+
+# DataLoader configurations
+batch_size: 32
+num_workers: 8
+pin_memory: true
+persistent_workers: true
+
+# Frontend parameters
+sr: 32000  # Native AudioSet sample rate
+# target_time_bins: 1024 # We want the spectrogram to be of dim (n_mels, target_time_bins)
+clip_length: 10  # Seconds
+# Task parameters
+classes_num: 527  # AudioSet ontology size
+
+# waveform transforms
+transforms:
+  - _target_: src.data.components.mel_spec.MelSpecTransform
+    sr: ${data.sr}
+    n_mels: 128  # Number of mel bands. This is going to be the width of the spectrogram
+    target_time_bins: 256 # We want the spectrogram to be of dim (target_time_bins, n_mels)
+    clip_length: ${data.clip_length}
+
+
+##################################################
+# AudioSetDataset (HDF5-based)
+##################################################
+train_dataset:
+  _target_: src.data.components.audioset_dataset.AudioSetDataset
+  hdf5_file: ${paths.data_dir}/AudioSet/balanced_train_segments_mp3.hdf
+  sr: ${data.sr}
+  clip_length: ${data.clip_length}
+  classes_num: ${data.classes_num}
+  mp3_dataset: true
+  transforms: ${data.transforms}
+
+eval_dataset:
+  _target_: src.data.components.audioset_dataset.AudioSetDataset
+  hdf5_file: ${paths.data_dir}/AudioSet/eval_segments_mp3.hdf
+  sr: ${data.sr}
+  clip_length: ${data.clip_length}
+  classes_num: ${data.classes_num}
+  mp3_dataset: true
+  transforms: ${data.transforms}

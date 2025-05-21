@@ -1,0 +1,24 @@
+defaults:
+  - model_checkpoint
+  # - early_stopping
+  - model_summary
+  - rich_progress_bar
+  - _self_
+
+model_checkpoint:
+  dirpath: ${paths.output_dir}/checkpoints
+  filename: "epoch_{epoch:03d}-step_{step}"
+  save_last: True
+  monitor: "val/loss"
+  save_top_k: 3
+  every_n_epochs: 1
+  auto_insert_metric_name: False
+  verbose: True
+
+# early_stopping:
+#   monitor: "val/acc"
+#   patience: 100
+#   mode: "max"
+
+model_summary:
+  max_depth: 1

@@ -1,0 +1,17 @@
+# https://lightning.ai/docs/pytorch/latest/api/lightning.pytorch.callbacks.RichProgressBar.html
+
+rich_progress_bar:
+  _target_: lightning.pytorch.callbacks.RichProgressBar
+  theme:
+    _target_: lightning.pytorch.callbacks.progress.rich_progress.RichProgressBarTheme
+    metrics_format: ".3e"  # Scientific notation with 2 decimal places
+    # Below are default theme parameters from documentation
+    description: ""
+    progress_bar: "#6206E0"
+    progress_bar_finished: "#6206E0"
+    progress_bar_pulse: "#6206E0"
+    batch_progress: ""
+    time: "dim"
+    processing_speed: "dim underline"
+    metrics: "italic"
+    metrics_text_delimiter: " "

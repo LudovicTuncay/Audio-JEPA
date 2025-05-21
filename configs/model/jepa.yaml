@@ -1,0 +1,58 @@
+_target_: src.models.jepa_module.JEPAModule
+
+encoder:
+  _target_: src.models.components.vision_transformer.VisionTransformer
+  patch_size: # Tuple of the patch size 
+  - 16 # Patch size in the Time dimension (height)
+  - 16 # Patch size in the Frequency dimension (width)
+  in_chans: 1
+  embed_dim: 768
+  depth: 12
+  num_heads: 12
+  mlp_ratio: 4.
+
+predictor:
+  _target_: src.models.components.vision_transformer.VisionTransformerPredictor
+  num_sources: 4
+  embed_dim: ${model.encoder.embed_dim}
+  depth: 6
+  num_heads: 12
+  mlp_ratio: 4.
+
+criterion:
+  _target_: src.models.components.loss.Loss
+  loss_type: norm_mse
+  norm_pix_loss: true
+
+optimizer:
+  _target_: torch.optim.AdamW
+  _partial_: true
+  lr: 0.0003
+  weight_decay: 0.05
+  betas:
+    - 0.9
+    - 0.95
+
+lr_scheduler:
+  _target_: src.optimizers.warmup_cosine.WarmupCosineScheduler
+  _partial_: true
+  warmup_steps: 1000
+  start_lr: 1e-6
+  ref_lr: 1e-3
+  final_lr: 0.0
+wd_scheduler:
+  _target_: src.optimizers.cosine_wd.CosineWDScheduler
+  _partial_: true
+  ref_wd: 1e-6
+  final_wd: 1e-6
+
+
+# scheduler:
+#   _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+#   _partial_: true
+#   mode: min
+#   factor: 0.1
+#   patience: 10
+
+# compile model for faster training with pytorch 2.0
+compile: False # Does not work on my windows machine.
