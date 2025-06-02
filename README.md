@@ -1,7 +1,6 @@
 <div align="center">
 
-# Lightning-Hydra-Template
-
+# Audio-JEPA
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![python](https://img.shields.io/badge/-Python_3.12-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![pytorch](https://img.shields.io/badge/PyTorch_2.6+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
