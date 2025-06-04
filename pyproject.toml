@@ -30,6 +30,7 @@ dev = [
     "ipykernel>=6.29.5",
 ]
 
-# [tool.uv]
+[tool.uv]
 # no-cache = true
+cache-dir = "./.uv_cache"
 

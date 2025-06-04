@@ -1,0 +1,16 @@
+# @package _global_
+
+# Use Flash Attention v3
+defaults:
+  - jepa
+  - override /model: jepa
+
+model:
+  encoder:
+    attention_type: "flash3"
+    use_causal: false  # Set to true for causal attention
+    window_size: null  # Set to integer for windowed attention (e.g., 512)
+  predictor:
+    attention_type: "flash3"
+    use_causal: false
+    window_size: null

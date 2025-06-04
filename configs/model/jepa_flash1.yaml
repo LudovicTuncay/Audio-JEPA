@@ -1,0 +1,14 @@
+# @package _global_
+
+# Use Flash Attention v1
+defaults:
+  - jepa
+  - override /model: jepa
+
+model:
+  encoder:
+    attention_type: "flash1"
+    block_size: 64  # Block size for Flash Attention v1
+  predictor:
+    attention_type: "flash1"
+    block_size: 64

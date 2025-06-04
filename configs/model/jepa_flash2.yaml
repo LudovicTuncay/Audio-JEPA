@@ -1,0 +1,12 @@
+# @package _global_
+
+# Use Flash Attention v2
+defaults:
+  - jepa
+  - override /model: jepa
+
+model:
+  encoder:
+    attention_type: "flash2"
+  predictor:
+    attention_type: "flash2"

@@ -1,0 +1,12 @@
+# @package _global_
+
+# Use base attention (standard transformer attention)
+defaults:
+  - jepa
+  - override /model: jepa
+
+model:
+  encoder:
+    attention_type: "base"
+  predictor:
+    attention_type: "base"
