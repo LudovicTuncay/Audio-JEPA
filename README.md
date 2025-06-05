@@ -29,7 +29,7 @@ this will install all the dependencies.
 To run the pre-training code, you can use the following command:
 
 ```bash
-uv run src/train
+uv run src/train.py
 ```
 
 This will run the training script with the default configuration (on CPU).
@@ -39,7 +39,7 @@ If you want to change the configuration, you can either change the configuration
 For example, to run the training script on GPU, logged on WandB, with a specific batch size, and some additional options you could use the following command:
 
 ```bash
-uv run src/train logger=wandb trainer=gpu trainer.max_steps=100000 data.batch_size=64 callbacks.model_checkpoint.every_n_train_steps=20000 callbacks.model_checkpoint.save_top_k=-1
+uv run src/train.py logger=wandb trainer=gpu trainer.max_steps=100000 data.batch_size=64 callbacks.model_checkpoint.every_n_train_steps=20000 callbacks.model_checkpoint.save_top_k=-1
 ```
 
 By default, training checkpoints are saved in the `logs/train/runs/<date>` folder. You can change this by modifying the `logger` configuration in the `config` folder. 
