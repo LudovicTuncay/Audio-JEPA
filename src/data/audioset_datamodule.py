@@ -17,10 +17,11 @@ class AudioSetDataModule(L.LightningDataModule):
     def __init__(
         self,
         train_dataset: Dataset,
+        val_dataset: Optional[Dataset],
         eval_dataset: Dataset,
         batch_size: int,
         num_workers: int,
-        val_prop: float = 0.1,
+        val_prop: Optional[float] = None,
         pin_memory: bool = True,
         persistent_workers: bool = True,
         sr: int = 32000,
@@ -59,9 +60,12 @@ class AudioSetDataModule(L.LightningDataModule):
         
         # Data paths
         self.train_dataset = train_dataset
+        self.val_dataset = val_dataset
         self.eval_dataset = eval_dataset
-        self.val_prop = val_prop
         
+        assert (val_prop is None and val_dataset is not None) or (val_prop > 0 and val_dataset is None), "val_prop and val_dataset must be mutually exclusive"
+        self.val_prop = val_prop
+
         # DataLoader parameters
         self.batch_size = batch_size
         self.num_workers = num_workers
@@ -82,21 +86,23 @@ class AudioSetDataModule(L.LightningDataModule):
         self.transforms = transforms
         
         self.seed = seed
+
+        # set the seed
+        torch.manual_seed(self.seed)
         
     def setup(self, stage: Optional[str] = None) -> None:
         """Initialize train/val datasets."""
         
-        if self.val_prop > 0:
+        if self.val_prop is None and self.val_dataset is not None:
+            self.data_train = self.train_dataset
+            self.data_val = self.val_dataset
+        else:
             train_size = int((1 - self.val_prop) * len(self.train_dataset))
             val_size = len(self.train_dataset) - train_size
             self.data_train, self.data_val = random_split(
                 self.train_dataset, [train_size, val_size], generator=torch.Generator().manual_seed(self.seed)
             )
-
-        else:
-            self.data_train = self.train_dataset
-            self.data_val = self.eval_dataset
-        
+            
         self.data_test = self.eval_dataset
     
     def train_dataloader(self) -> DataLoader:
