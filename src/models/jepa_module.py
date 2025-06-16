@@ -271,6 +271,19 @@ class JEPAModule(L.LightningModule):
         loss, preds, targets = self.model_step(batch)
         self.log("val/loss", loss, prog_bar=True, batch_size=batch.spectrograms.size(0), sync_dist=True)
         self.log("val/variance", torch.var(preds), prog_bar=True, batch_size=batch.spectrograms.size(0), sync_dist=True)
+        return
+
+    def test_step(
+        self, batch: AudioSetBatch, batch_idx: int
+    ) -> None:
+        """Perform a single test step on a batch of data from the test (eval) set.
+
+        :param batch: A batch of data containing the spectrograms to be processed.
+        :param batch_idx: The index of the current batch.
+        """
+        loss, preds, targets = self.model_step(batch)
+        self.log("test/loss", loss, prog_bar=True, batch_size=batch.spectrograms.size(0), sync_dist=True)
+        self.log("test/variance", torch.var(preds), prog_bar=True, batch_size=batch.spectrograms.size(0), sync_dist=True)
         return 
     
     
