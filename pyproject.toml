@@ -13,6 +13,7 @@ dependencies = [
     "hydra-optuna-sweeper>=1.2.0",
     "lightning>=2.5.0.post0",
     "matplotlib>=3.10.0",
+    "ninja>=1.11.1.4",
     "pandas>=2.2.3",
     "pre-commit>=4.1.0",
     "pytest>=8.3.4",
