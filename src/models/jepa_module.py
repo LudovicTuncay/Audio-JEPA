@@ -12,8 +12,7 @@ from src.data.components.audioset_dataset import AudioSetBatch
 from src.utils.visualize import create_masked_spectrogram
 from src.masks.components.utils import apply_masks
 from src.optimizers.warmup_cosine import WarmupCosineScheduler
-from src.optimizers.cosine_wd import CosineWDScheduler
-# from src.optimizers.combined_scheduler import CombinedScheduler
+from autoclip.torch import QuantileClip
 
 class JEPAModule(L.LightningModule):
 
@@ -24,7 +23,6 @@ class JEPAModule(L.LightningModule):
         criterion: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
         lr_scheduler: WarmupCosineScheduler = None,
-        wd_scheduler: CosineWDScheduler = None,
         ma_callback: MAWeightUpdate = MAWeightUpdate(),
         compile: bool = True,
     ) -> None:
@@ -67,7 +65,6 @@ class JEPAModule(L.LightningModule):
         self.optimizer_cls = optimizer
         
         self.lr_scheduler_cls = lr_scheduler
-        self.wd_scheduler_cls = wd_scheduler
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -347,39 +344,17 @@ class JEPAModule(L.LightningModule):
             dict: Optimizer configuration containing optimizer and scheduler settings.
         """
         # Create parameter groups following the original implementation
-        param_groups = [
-            {
-                'params': (p for n, p in self.encoder.named_parameters()
-                        if ('bias' not in n) and (len(p.shape) != 1))
-            }, {
-                'params': (p for n, p in self.predictor.named_parameters()
-                        if ('bias' not in n) and (len(p.shape) != 1))
-            }, {
-                'params': (p for n, p in self.encoder.named_parameters()
-                        if ('bias' in n) or (len(p.shape) == 1)),
-                'WD_exclude': True,
-                'weight_decay': 0
-            }, {
-                'params': (p for n, p in self.predictor.named_parameters()
-                        if ('bias' in n) or (len(p.shape) == 1)),
-                'WD_exclude': True,
-                'weight_decay': 0
-            }
-        ]
-    
+        parameters = list(self.encoder.parameters()) + list(self.predictor.parameters())
 
-        # Initialize optimizer (AdamW as in original implementation)
-        optimizer = self.hparams.optimizer(param_groups)
+        if hasattr(self.hparams.optimizer, 't_alpha_beta3'):
+            optimizer = self.hparams.optimizer(parameters, t_alpha_beta3=self.trainer.estimated_stepping_batches)
+        else:
+            optimizer = self.hparams.optimizer(parameters)
+        
+        autoclipped_optimizer = QuantileClip.as_optimizer(optimizer, quantile=0.9, history_length=1000) # Gradient clipping (autoclip)
 
         lr_scheduler = self.hparams.lr_scheduler(
-            optimizer=optimizer,
-            # T_max=int(self.num_training_steps)
-            T_max=self.trainer.estimated_stepping_batches,
-        )
-        
-        wd_scheduler = self.hparams.wd_scheduler(
-            optimizer=optimizer,
-            # T_max=int(self.num_training_steps)
+            optimizer=autoclipped_optimizer,
             T_max=self.trainer.estimated_stepping_batches,
         )
         
@@ -389,10 +364,7 @@ class JEPAModule(L.LightningModule):
             "frequency": 1
         }
         
-        wd_scheduler_config = {
-            "scheduler": wd_scheduler,
-            "interval": "step",
-            "frequency": 1
+        return {
+            "optimizer": autoclipped_optimizer,
+            "lr_scheduler": lr_scheduler_config
         }
-            
-        return [optimizer], [lr_scheduler_config, wd_scheduler_config]

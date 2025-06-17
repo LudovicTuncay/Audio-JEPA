@@ -5,6 +5,7 @@ description = "Adapting JEPA to generic sounds"
 requires-python = "==3.12.9"
 readme = "README.md"
 dependencies = [
+    "autoclip>=0.2.1",
     "av>=14.2.0",
     "flash-attn>=2.7.4.post1",
     "h5py>=3.13.0",
@@ -17,6 +18,7 @@ dependencies = [
     "pandas>=2.2.3",
     "pre-commit>=4.1.0",
     "pytest>=8.3.4",
+    "pytorch-optimizer>=3.6.0",
     "rich>=13.9.4",
     "rootutils>=1.0.7",
     "soundfile>=0.13.1",

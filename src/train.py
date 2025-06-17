@@ -105,7 +105,6 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         "compile": cfg.model.get("compile", False),
         "optimizer": cfg.model.optimizer,
         "lr_scheduler": cfg.model.lr_scheduler,
-        "wd_scheduler": cfg.model.wd_scheduler,
     })
     
     log.info(f"Instantiating model <{model_cfg._target_}>")
