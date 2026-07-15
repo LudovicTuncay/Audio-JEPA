@@ -25,8 +25,8 @@ classes_num: 527 # AudioSet ontology size
 transforms:
   - _target_: src.data.components.mel_spec.MelSpecTransform
     sr: ${data.sr}
-    n_mels: 96 # Number of mel bands. This is going to be the width of the spectrogram
-    target_time_bins: 512 # The spectrogram will be of dim (target_time_bins, n_mels)
+    n_mels: 128 # Number of mel bands. This is going to be the width of the spectrogram
+    target_time_bins: 256 # The spectrogram will be of dim (target_time_bins, n_mels)
     clip_length: ${data.clip_length}
 
 ##################################################
