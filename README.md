@@ -1,17 +1,21 @@
 <div align="center">
 
 # Audio-JEPA
-[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-[![python](https://img.shields.io/badge/-Python_3.12-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![pytorch](https://img.shields.io/badge/PyTorch_2.6+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
-[![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
-[![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json&style=for-the-badge)](https://github.com/astral-sh/uv)
+[![python](https://img.shields.io/badge/-Python_3.12-blue?logo=python&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
+[![pytorch](https://img.shields.io/badge/PyTorch_2.6+-ee4c2c?logo=pytorch&logoColor=white&style=for-the-badge)](https://pytorch.org/get-started/locally/)
+[![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white&style=for-the-badge)](https://pytorchlightning.ai/)
+<!-- [![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/) -->
 
 </div>
 
 ## 📌  Introduction
 
 This repository is based on the very good Lightning-Hydra-Template, which is a template for PyTorch Lightning projects with Hydra configuration.
+
+It is the official implementation of the `Audio-JEPA: Joint-Embedding Predictive Architecture for Audio Representation Learning` paper, presented at ICME 2025.
+
+A checkpoint is available here: [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?logo=huggingface&logoColor=000)](https://huggingface.co/ltuncay/Audio-JEPA).
 
 ## 📌  Running the code
 
