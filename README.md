@@ -11,7 +11,7 @@
 
 ## 📌  Introduction
 
-This repository is based on the very good Lightning-Hydra-Template, which is a template for PyTorch Lightning projects with Hydra configuration.
+This repository is based on the very good [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), which is a template for PyTorch Lightning projects with Hydra configuration.
 
 It is the official implementation of the `Audio-JEPA: Joint-Embedding Predictive Architecture for Audio Representation Learning` paper, presented at ICME 2025.
 
