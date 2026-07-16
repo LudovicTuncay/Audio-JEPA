@@ -13,7 +13,6 @@ encoder:
 
 predictor:
   _target_: src.models.components.vision_transformer.VisionTransformerPredictor
-  num_sources: 4
   embed_dim: ${model.encoder.embed_dim}
   depth: 6
   num_heads: 12
